@@ -6,12 +6,15 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{epstopdf}
+\usepackage{glossaries}
+\usepackage{amssymb}
+\usepackage[toc,page]{appendix}
 
 \begin{document}
 
 \begin{titlepage}
   \title{Mathematics behind the scaling:\\ From MOSFET to FinFET and beyond}\\
-  \author{Aritra~Bhattacharjee\\Sr. Design Engineer, Cadence Design Systems Pvt. Ltd.\\aritrabhattacharjee12@gmail.com, +91-7338133250}
+  \author{Aritra~Bhattacharjee\\ \texttt{aritrabhattacharjee12@gmail.com}}\\
   \date{\today}
 
   \maketitle
@@ -32,25 +35,32 @@
 \def \m {\frac{\epsilon_{ox}}{\epsilon_{Si}t_{Si}t_{ox}}}
 \def \m1 {\frac{\epsilon_{Si}t_{Si}t_{ox}}{\epsilon_{ox}}}
 \def \l {\sqrt{{\frac{\epsilon_{ox}}{\epsilon_{Si}t_{Si}t_{ox}}}}}
+\def \lF {\sqrt {\left( 1 + \frac{\W}{2 \H} \right) \frac{2 \epsilon_{ox}}{\epsilon_{Si}\W t_{ox}}}}
 \def \H {H_{fin}}
 \def \W {W_{fin}}
 %% End of the variable defination
 
+\tableofcontents
+\listoffigures
+\listoftables
+
+\pagebreak
+
 \section*{Preface}
 
-\textit{``Behind every successful man, there is a woman.''}\\
+\textit{``Behind every successful man, there is a woman.''}
 
-The above phrase extends beyond the realms of social life. Like a woman is behind the success of her man, behind the success of the semiconductor physics, there is mathematics.\\
+The above phrase extends beyond the realms of social life. Like a woman is behind the success of her man, behind the success of the semiconductor physics, there is mathematics.
 
-Hailing from a Layout Engineering background I stumble upon a lot of confusion every day. There is a limited access of the data from the Fabrication Lab. There are restrictions from the customer about the product details. The CAD tools simplifies our lives but using these tools makes us forget about the basic concepts of deriving things.\\
+Hailing from a Layout Engineering background I stumble upon a lot of confusion every day. There is a limited access of the data from the Fabrication Lab. There are restrictions from the customer about the product details. The CAD tools simplifies our lives but using these tools makes us forget about the basic concepts of deriving things.
 
-I started writing \textbf{``Mathematics behind the scaling: From MOSFET to FinFET and beyond''} to clear some air about these cosfusion regarding scaling.\\
+I started writing \textbf{``Mathematics behind the scaling: From MOSFET to FinFET and beyond''} to clear some air about these cosfusion regarding scaling.
 
-Scaling is an continuous effort from the VLSI industry to generate faster, better and cheaper ICs. As we move below Gate Length of 32nm the Basic MOS structure needs to be modified. The physical reason is explained in many places. But to understand the phenomenon correctly we need to understand the mathematics too. From the mathematical equation, we would be able to make out the reasons behind the changing of the MOS structure required for scaling.\\
+Scaling is an continuous effort from the VLSI industry to generate faster, better and cheaper ICs. As we move below Gate Length of 32nm the Basic MOS structure needs to be modified. The physical reason is explained in many places. But to understand the phenomenon correctly we need to understand the mathematics too. From the mathematical equation, we would be able to make out the reasons behind the changing of the MOS structure required for scaling.
 
-This article focuses on the classical approach to derive the scaling equation. The quantum theories of MOSFET is beyond the scope of this article.\\
+This article focuses on the classical approach to derive the scaling equation. The quantum theories of MOSFET is beyond the scope of this article.
 
-In this article, first I focus on the derivation of the \PE. Then I illustrate the \PE in MOS. After that we will see the derivation of \PE in MOSFET followed by FinFET. After this point we will get a clear idea about the scaling strategy of beyond FinFET.\\
+In this article, first I focus on the derivation of the \PE. Then I illustrate the \PE in MOS. After that we will see the derivation of \PE in MOSFET followed by FinFET. After this point we will get a clear idea about the scaling strategy of beyond FinFET.
 
 I hope my midnight fuel is worth your time.
 \pagebreak
@@ -124,11 +134,11 @@ The equation \ref{eq:pe} is known as the \PE. This equation denotes \PEstate.
 
 \section{Illustration of \PE in MOSFET}
 \label{sec:Poisson-in-MOS}
-In the Section \ref{sec:poisson} we have derived the \PE. In this section we will try to illustrate the \PE in MOSFET.\\
+In the Section \ref{sec:poisson} we have derived the \PE. In this section we will try to illustrate the \PE in MOSFET.
 
 To understand the mathematical form of \PE, first we take a point inside n-chnnel MOSFET. The Elfield field experienced by the point in $x$, $y$ and $z$ Dimensions are $E_x$, $E_y$ and $E_z$ respectively. Refer to figure \ref{fig:E-Field-in-channel} for better understanding.
 
-\begin{figure}[h!]
+\begin{figure}[!h]
   \includegraphics[scale=0.8]{./BulkFinFET-EField-in-Channel.eps}
   \caption{Electric Field in MOSFET Channel}
   \label{fig:E-Field-in-channel}
@@ -136,27 +146,28 @@ To understand the mathematical form of \PE, first we take a point inside n-chnne
 
 From the Figure \ref{fig:E-Field-in-channel} we can observe that, $E_z$ component of the Electric filed is responsible for the Gate Electric Field. The $E_x$ field is Electric field experinced by the point, due to Electric field from Drain to Source. The $E_y$ component will be zero for Single/Double gate MOSFET. This makes the \PE as following:
 
+
 \begin{align*}
   \pe\\
   Since, \peY = 0\\
   \peX + \peZ = \peC
 \end{align*}
 
-Now, we can observe that $\peZ$ is the desired as it occurs due to $E_z$, the Gate Electric Field. The $\peX$ component causes (SCE) Short Channel Effects, such as, DIBL (Drain Induced Barier Lowering). The $\peC$ is a constant. Thus if we can increase the other component $\peZ$, in the \PE, then $\peX$ will come down i.e. will decrease the DIBL effect in the MOSFET. We can achive this by, somehow placeing a gate polysilicon beneath the channel region. This brings the concept of double gate MOSFET. See the figure \ref {fig:MOS-DGMOS} for better visualization\\
+Now, we can observe that $\peZ$ is the desired as it occurs due to $E_z$, the Gate Electric Field. The $\peX$ component causes (SCE) Short Channel Effects, such as, DIBL (Drain Induced Barier Lowering). The $\peC$ is a constant. Thus if we can increase the other component $\peZ$, in the \PE, then $\peX$ will come down i.e. will decrease the DIBL effect in the MOSFET. We can achive this by, somehow placeing a gate polysilicon beneath the channel region. This brings the concept of double gate MOSFET. See the figure \ref {fig:MOS-DGMOS} for better visualization.
 
-\begin{figure}[h!]
+\begin{figure}[!h]
   \includegraphics[scale=0.8]{./BulkFinFET-bulk-MOSFET.eps}
   \caption{(a) Bulk MOSFET (b) Double Gate MOSFET}
   \label{fig:MOS-DGMOS}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!h]
   \includegraphics[scale=0.8]{./BulkFinFET-PD-FD-SOI.eps}
   \caption{SOI MOSFET (a) PDSOI Partially Depalted SOI MOSFET (b) FDSOI Fully Depalted SOI MOSFET}
   \label{fig:PDSOI-FDSOI}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[!h]
   \includegraphics[scale=0.8]{./BulkFinFET-FinFET.eps}
   \caption{(a) Double Gate Bulk FinFET (b) Tri-Gate Bulk FinFET}
   \label{fig:FinFET}
@@ -194,7 +205,7 @@ From figure \ref {fig:MOS-DGMOS}, we can understand, if we want to decrease the 
 
 \section{Solving \PE in MOSFET}
 
-Let us solve the \PE in Single Gate Bulk MOSFET.\\
+Let us solve the \PE in Single Gate Bulk MOSFET.
 
 The controlling Gate Electric filed in MOSFET will only induce $E_z$. The $E_x$ is the unwanted Electric field from Source to Drain. The $E_y$ will not be present as there are not Gate Electrode at the $y$ coordinate. Refer to figure \ref{fig:E-Field-in-channel} in page \pageref{fig:E-Field-in-channel} for better visulization.
 
@@ -227,12 +238,12 @@ To solve the equation \ref{eq:pe-for-MOSFET} we need to define some boundary con
     \because \mathcal{E_{S}} = \frac{d\phi}{dz} \bigg\vert_{z=0}\\
     \therefore \frac{d\phi}{dz} \bigg\vert_{z=0} = \frac {\epsilon_{ox}} {\epsilon_{Si}} \mathcal{E_{G}}\\
     Now, \mathcal{E_{G}} = - \frac{\partial V}{\partial x}\\
-    \therefor \mathcal{E_{G}} = - \frac{V_{GS}^{'} - \phi_f(x)}{t_{ox}}\\
+    \therefore \mathcal{E_{G}} = - \frac{V_{GS}^{'} - \phi_f(x)}{t_{ox}}\\
     So, \frac{d\phi}{dz} \bigg\vert_{z=0} = \frac {\epsilon_{ox}} {\epsilon_{Si}} \frac{\phi_f(x) - V_{GS}^{'}}{t_{ox}}\\
     Where, V_{GS}^{'} = V_{GS} - V_{FBf}
   \end{align*}
 
-In the above expression, the $V_{GS}$ is the voltage difference at the gate oxide, which is applied $V_{GS}$ minus the $V_{FBf}$. $V_{FBf}$ is the Flat Band Voltage at the front surface.\\
+In the above expression, the $V_{GS}$ is the voltage difference at the gate oxide, which is applied $V_{GS}$ minus the $V_{FBf}$. $V_{FBf}$ is the Flat Band Voltage at the front surface.
 
 The above expression gives us the second variable as:
 
@@ -348,12 +359,71 @@ If we star the solution from the source end, we will reach the solution as :
   \phi_f(x) = (V_{bi} + V_{DS}) \exp \left({\pm x \lambda_{MOS}}\right) + V_{GS}^{'} - \peC \frac{1}{\lambda_{MOS}^2}
 \end{equation}
 
+To explain the effect of the Drain/Source on channel, let us take the gate voltage is not present now. When $V_{GS}=0$, at that time the surface potential will decrease from the Source and Drain end to the channel region. So the $\pm$, in the exponential part in the surface potential equation will become $-$. So the effective solution in Source end will become:
+
+\begin{equation}
+  \label{eq:MOS-sur-pot-S}
+  \phi_f(x) = V_{bi} \exp \left({- x \lambda_{MOS}}\right) - V_{fFB} - \peC \frac{1}{\lambda_{MOS}^2}
+\end{equation}
+
+For the Drain part surface potential will become as:
+
+\begin{equation}
+  \label{eq:MOS-sur-pot-D}
+  \phi_f(x) = (V_{bi} + V_{DS}) \exp \left({- x \lambda_{MOS}}\right) - V_{fFB} - \peC \frac{1}{\lambda_{MOS}^2}
+\end{equation}
+
+If we Plot both the solution and superimpose them on each other we get the combined effect of the Drain and Source on the MOS channel.
+This voltage is purely caused by the unwanted SCE effect (like DIBL).
+
+To plot the curve, we use the values, shown in table \ref{tab:MOS-device-table}, published in\\ \texttt{http://public.itrs.net} \cite{web:ITRS} website.
+
+\begin{table}[!h]
+  \caption{MOSFET Device Parameters}
+  \label{tab:MOS-device-table}
+  \centering
+  \begin{tabular}{p{0.4\linewidth} p{0.4\linewidth} }
+    \hline
+    \hline
+     & \\
+    \textbf{Parameter} & \textbf{Valus}\\
+     & \\
+    \hline
+    & \\
+    EOT (nm), $t_{ox}$ \cite{web:ITRS} & $0.9$\\
+    $\epsilon_{ox}$ & $3.9~\epsilon_0$\\
+    $\epsilon_{Si}$ & $11.68~\epsilon_0$\\
+    $\epsilon_0$ (F/nm) & $8.85 \ast 10^{-21}$\\
+    $t_{Si}$ (nm) & 70\\
+     & \\
+    \hline
+    \hline
+  \end{tabular}
+\end{table}
+
+Now we can clculate the value of $\lambda_{MOS}$ from table \ref{tab:MOS-device-table}
+
+\begin{equation}
+  \lambda_{MOS} = \l =  0.072927~nm^{-1}
+\end{equation}
+
+We know that the Built-in potential of any p-n junction is:
+
+\begin{equation}
+  V_{bi} = \frac{kT}{q} ln\frac{N_{a}~N_{d}}{n_i^2}
+\end{equation}
+
+Considering, there is no trapped charge in the oxide, the Flat Band Voltage for nMOS will be:
+
+\begin{equation}
+  V_{fFB} = \Phi_{MS} = \Phi_M - \Phi_S = \Phi_M - \left( \chi + \frac{E_c - E_i}{q} + \frac{kT}{q}ln\frac{N_a}{n_i} \right)
+\end{equation}
 
 \section{Solving \PE in FinFET}
 
 To solve the \PE in FinFET, we need to take a closer look into the FinFET structure. From the Figure \ref{fig:FinFET-E-Field} the Gausian Surface is imagine at the FinFET channel region. Inside this Region, a point Experiences the electric Field $E_x$, $E_y$ and $E_z$. $E_x$ is caused by the SCE. $E_z$ is caused by the top Gate. $E_y$ is due to both side of the Gates.
 
-\begin{figure}[h!]
+\begin{figure}[!h]
   \includegraphics[scale=0.8]{./FinFET-E-Field.eps}
   \caption{Tri-Gate Bulk FinFET with Gausian surface at the Channel region}
   \label{fig:FinFET-E-Field}
@@ -365,7 +435,7 @@ We know, that \PE is:
   \pe
 \end{equation}
 
-Now the Gate is causing the $E_z$ and $E_y$ electric Fields. If the FinFET structure are a perfect cube, then the $E_y$ would be 2 times of $E_z$. Since the width and the height are \W and \H respectively, the electric field will be:
+Now the Gate is causing the $E_z$ and $E_y$ electric Fields. If the FinFET structure are a perfect cube, then the $E_y$ would be 2 times of $E_z$. Since the width and the height are $\W$ and $\H$ respectively, the electric field will be:
 
 \begin{align*}
   E_y = \frac{2\H}{\W} E_z
@@ -413,12 +483,12 @@ Let us consider the boundary conditions for solving the equation \ref{eq:fin-pe-
     \because \mathcal{E_{S}} = \frac{d\phi}{dy} \bigg\vert_{y=\W}\\
     \therefore \frac{d\phi}{dy} \bigg\vert_{y=\W} = - \frac {\epsilon_{ox}} {\epsilon_{Si}} \mathcal{E_{G}}\\
     Now, \mathcal{E_{G}} = - \frac{\partial V}{\partial x}\\
-    \therefor \mathcal{E_{G}} = \frac{V_{GS}^{'} - \phi_f(x)}{t_{ox}}\\
+    \therefore \mathcal{E_{G}} = \frac{V_{GS}^{'} - \phi_f(x)}{t_{ox}}\\
     \frac{d\phi}{dy} \bigg\vert_{y=\W} = - \frac {\epsilon_{ox}} {\epsilon_{Si}} \frac{\phi_f(x) - V_{GS}^{'}}{t_{ox}}
   \end{align*}
   Putting this value to the equation \ref{eq:fin-pe-cond}, we get:
   \begin{align*}
-    C_2(x) + 2\WC_3(x)= - C_2(x)\\
+    C_2(x) + 2\W C_3(x) = - C_2(x)\\
     C_3(x) = - \frac{1}{\W} C_2(x)
   \end{align*}
   \begin{equation}
@@ -448,7 +518,7 @@ This equation is vaid for all values of $y$. At $y=0$, $\phi(x,y)=\phi_f(x)$, th
 Like MOSFET solution, let us consider a term, $\lambda_{FIN}$, as:
 
 \begin{equation}
-  \lambda_{FIN} = \sqrt {\left( 1 + \frac{\W}{2 \H} \right) \frac{2 \epsilon_{ox}}{\epsilon_{Si}\W t_{ox}}}
+  \lambda_{FIN} = \lF
 \end{equation}
 
 Let us consider a term, $\varphi_f(x)$ as:
@@ -478,9 +548,67 @@ Like MOSFET, the constant $\varphi_0$ will be $V_{bi}$. This makes the final exp
 
 \section{Surface Potential of FinFET}
 
+\begin{table}[!h]
+  \caption{FinFET Device Parameters}
+  \label{tab:Fin-device-table}
+  \centering
+  \begin{tabular}{p{0.4\linewidth} p{0.4\linewidth} }
+    \hline
+    \hline
+     & \\
+    \textbf{Parameter} & \textbf{Valus}\\
+     & \\
+    \hline
+    & \\
+    EOT (nm), $t_{ox}$ \cite{web:ITRS} & $0.9$\\
+    $\epsilon_{ox}$ & $3.9~\epsilon_0$\\
+    $\epsilon_{Si}$ & $11.68~\epsilon_0$\\
+    $\epsilon_0$ (F/nm) & $8.85 * 10^{-21}$\\
+    $W_{Fin}$ (nm) & 20 \\
+    $H_{Fin}$ (nm) & 200\\
+    & \\
+    \hline
+    \hline
+  \end{tabular}
+\end{table}
+
+Calculating the values from table \ref{tab:Fin-device-table}
+
+\begin{equation}
+  \lambda_{FIN} = \lF = 0.19771~nm^{-1}
+\end{equation}
+
 \section{Comparision of the Surface Potential of MOSFET and FinFET}
 
+\pagebreak
 
+\begin{appendices}
+  \section{Derivation of Flat Band Voltage}
+  \section{Derivation of Built in Potential}
+  \section{How this document is produced?}
+  \section{GPL}
+
+  \textbf{``Mathematics behind the scaling: From MOSFET to FinFET and beyond''} is created for understanding of the scaling trends seen in the VLSI. The pdf describes why it is needed to scale MOSFET to FinFET and reach GAA devices, mathematically.
+  Copyright (C) 2016 Aritra~Bhattacharjee
+
+  This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or any later version.
+
+  This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License along with this program.  If not, see \texttt{http://www.gnu.org/licenses/}.
+
+\end{appendices}
+
+\pagebreak
+
+\begin{thebibliography}{10}
+\bibitem{web:ITRS}
+  \emph{http://public.itrs.net}
+\bibitem{book:Q-FinFET}
+  Weihua Han, Zhiming M. Wang \emph{Toward Quantum FinFET}
+\bibitem{book:FF-MuG-T}
+  Jean-Pierre Colinge (Ed.) \emph{FinFETs and Other Multi-Gate Transistors} \texttt{ISBN 978-0-387-71751-7}
+\end{thebibliography}
 
 \end{document}
 
