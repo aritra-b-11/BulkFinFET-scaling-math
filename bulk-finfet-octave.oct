@@ -1,0 +1,46 @@
+e_0 = 8.85 * 10^-12
+e_ox = 3.9 * e_0
+e_si = 11.68 * e_0
+t_si = 70 * 10^-9
+t_ox = 1.2 * 10^-9
+W = 20 * 10^-9
+H = 40 * 10^-9
+
+l_MOS = sqrt(e_ox/(e_si * t_si * t_ox))
+l_Fin = sqrt((1+(W/(2*H)))*((2*e_ox)/(e_si*W*t_ox)))
+
+P_M = 4.1
+X   = 4.05
+V_t = 0.025
+N_a = 1.3 * 10^17 * 10^6
+N_d = 2.2 * 10^15 * 10^6
+n_i = 1.5 * 10^10 * 10^6
+q   = 1.6 * 10^-19
+E_g = 1.12*q
+
+V_FB = P_M - (X + (E_g/2*q) + (V_t*log(N_a/n_i)))
+V_b = V_t * log((N_a*N_d)/(n_i**2))
+
+x=0:0.1*10^-9:20*10^-9;
+P_MOS = V_b * exp(-x*l_MOS) - V_FB - ((q*N_a)/e_si)*(1/l_MOS**2);
+P_Fin = V_b * exp(-x*l_Fin) - V_FB - ((q*N_a)/e_si)*(1/l_Fin**2);
+
+graphics_toolkit('gnuplot')
+
+plot(x,P_MOS,"-r;MOSFET;")
+xlabel("Effective Channel Length [m]")
+ylabel("Surface potential [V]")
+print -deps -color MOSFET_surface_potential_graph.eps
+
+plot(x,P_Fin,"-g;FinFET;")
+xlabel("Effective Channel Length [m]")
+ylabel("Surface potential [V]")
+print -deps -color FinFET_surface_potential_graph.eps
+
+
+plot(x,P_MOS,"-+r;MOSFET;",x,P_Fin,"-og;FINFET;")
+xlabel("Effective Channel Length [m]")
+ylabel("Surface potential [V]")
+print -deps -color MOSFET_FinFET_surface_potential_graph.eps
+
+
