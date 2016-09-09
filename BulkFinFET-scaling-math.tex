@@ -1,6 +1,29 @@
 \documentclass[a4paper]{article}
 
 \pagenumbering{arabic}
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Octave,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
 
 \usepackage{mathrsfs}
 \usepackage{amsmath}
@@ -169,7 +192,7 @@ Now, we can observe that $\peZ$ is the desired as it occurs due to $E_z$, the Ga
 
 \begin{figure}[!h]
   \includegraphics[scale=0.8]{./BulkFinFET-FinFET.eps}
-  \caption{(a) Double Gate Bulk FinFET (b) Tri-Gate Bulk FinFET}
+  \caption{Single to Double Gate Structure (a) Double Gate Bulk FinFET (b) Tri-Gate Bulk FinFET}
   \label{fig:FinFET}
 \end{figure}
 
@@ -341,22 +364,13 @@ Lets start with the equation \ref{eq:f-potnetial-of-MOS}:
 
 \begin{align*}
   \phi_f(x) = V_{bi} \exp \left({\pm x \lambda_{MOS}}\right) + V_{GS}^{'} - \peC \frac{1}{\lambda_{MOS}^2}\\
-  At~x=0,~\phi_f(0) = V_{bi} + V_{GS}^{'} -\peC \frac{1}{\lambda_{MOS}^2}\\
-  At~x=L_{eq},~\phi_f(L_{eq})  = V_{bi} + V_{DS} + V_{GS}^{'} -\peC \frac{1}{\lambda_{MOS}^2}
+  At~x=0,~\phi_f(0) = V_{bi} + V_{GS}^{'} -\peC \frac{1}{\lambda_{MOS}^2}
 \end{align*}
 
-At Drain end, the potential will be $V_{DS} + V_{bi}$. This defines the initail and final valuess of the surface potential. At the channel, as the surface potential is an $x$ dependant term, it will die out. This is true, as the point in channel, will have minimal influence from source or drain.
-
-Since we considered the starting point of the $x$ axis is the source, we reached a surface potential solution as:
+This makes the surface potential solution as:
 
 \begin{equation}
   \phi_f(x) = V_{bi} \exp \left({\pm x \lambda_{MOS}}\right) + V_{GS}^{'} - \peC \frac{1}{\lambda_{MOS}^2}
-\end{equation}
-
-If we star the solution from the source end, we will reach the solution as :
-
-\begin{equation}
-  \phi_f(x) = (V_{bi} + V_{DS}) \exp \left({\pm x \lambda_{MOS}}\right) + V_{GS}^{'} - \peC \frac{1}{\lambda_{MOS}^2}
 \end{equation}
 
 To explain the effect of the Drain/Source on channel, let us take the gate voltage is not present now. When $V_{GS}=0$, at that time the surface potential will decrease from the Source and Drain end to the channel region. So the $\pm$, in the exponential part in the surface potential equation will become $-$. So the effective solution in Source end will become:
@@ -366,17 +380,10 @@ To explain the effect of the Drain/Source on channel, let us take the gate volta
   \phi_f(x) = V_{bi} \exp \left({- x \lambda_{MOS}}\right) - V_{fFB} - \peC \frac{1}{\lambda_{MOS}^2}
 \end{equation}
 
-For the Drain part surface potential will become as:
-
-\begin{equation}
-  \label{eq:MOS-sur-pot-D}
-  \phi_f(x) = (V_{bi} + V_{DS}) \exp \left({- x \lambda_{MOS}}\right) - V_{fFB} - \peC \frac{1}{\lambda_{MOS}^2}
-\end{equation}
-
 If we Plot both the solution and superimpose them on each other we get the combined effect of the Drain and Source on the MOS channel.
 This voltage is purely caused by the unwanted SCE effect (like DIBL).
 
-To plot the curve, we use the values, shown in table \ref{tab:MOS-device-table}, published in\\ \texttt{http://public.itrs.net} \cite{web:ITRS} website.
+To plot the curve, we use the values, shown in table \ref{tab:MOS-device-table}.
 
 \begin{table}[!h]
   \caption{MOSFET Device Parameters}
@@ -390,7 +397,7 @@ To plot the curve, we use the values, shown in table \ref{tab:MOS-device-table},
      & \\
     \hline
     & \\
-    EOT (nm), $t_{ox}$ \cite{web:ITRS} & $0.9$\\
+    EOT (nm), $t_{ox}$ \cite{book:Q-FinFET} & $1.2$\\
     $\epsilon_{ox}$ & $3.9~\epsilon_0$\\
     $\epsilon_{Si}$ & $11.68~\epsilon_0$\\
     $\epsilon_0$ (F/nm) & $8.85 \ast 10^{-21}$\\
@@ -404,7 +411,7 @@ To plot the curve, we use the values, shown in table \ref{tab:MOS-device-table},
 Now we can clculate the value of $\lambda_{MOS}$ from table \ref{tab:MOS-device-table}
 
 \begin{equation}
-  \lambda_{MOS} = \l =  0.072927~nm^{-1}
+  \lambda_{MOS} = \l =  0.063048~nm^{-1}
 \end{equation}
 
 We know that the Built-in potential of any p-n junction is:
@@ -413,18 +420,79 @@ We know that the Built-in potential of any p-n junction is:
   V_{bi} = \frac{kT}{q} ln\frac{N_{a}~N_{d}}{n_i^2}
 \end{equation}
 
+\begin{align*}
+  Where,~N_a=Numbe~of~Acceptor~Ions,\\
+  N_d=Numbe~of~Doner~Ions,\\
+  n_i=intrinsic~carrier~concentration\\
+  k=Boltzman~Constant\\
+  T=Temp~in~Kelvin\\
+  q=charge~of~electron
+\end{align*}
+
 Considering, there is no trapped charge in the oxide, the Flat Band Voltage for nMOS will be:
 
 \begin{equation}
-  V_{fFB} = \Phi_{MS} = \Phi_M - \Phi_S = \Phi_M - \left( \chi + \frac{E_c - E_i}{q} + \frac{kT}{q}ln\frac{N_a}{n_i} \right)
+  V_{fFB} = \Phi_{MS} = \Phi_M - \Phi_S = \Phi_M - \left( \chi + \frac{E_g}{2q} + \frac{kT}{q}ln\frac{N_a}{n_i} \right)
 \end{equation}
+
+\begin{align*}
+  Where,~\Phi_{M}=Work~Function~of~Metal,\\
+  \Phi_{S}=Work~Function~of~Si,\\
+  \chi=Electron~Affinity~of~Si\\
+  E_g=Band~Gap~Energy~of~Si
+\end{align*}
+
+To get the value of the $V_{bi}$ and $V_{fFB}$ consider the values from the table \ref{tab:Gen-Device-values}
+
+\begin{table}[!h]
+  \caption{General Device Parameter Values}
+  \label{tab:Gen-Device-values}
+  \centering
+  \begin{tabular}{p{0.4\linewidth} p{0.4\linewidth} }
+    \hline
+    \hline
+    & \\
+    \textbf{Parameter} & \textbf{Valus}\\
+    & \\
+    \hline
+    & \\
+    q (C) & $1.6 \ast 10^{-19}$ \\
+    $\Phi_M$ (V) & 4.1\\
+    $E_g$ (eV) & 1.12\\
+    $\chi$ (eV) & 4.05\\
+    $kT/q$ (V) & 0.025\\
+    $n_i~cm^{-3}$ & $1.5 \ast 10^{10}$\\
+    $N_a~cm^{-3}$ & $1.3 \ast 10^{17}$\\
+    $N_d~cm^{-3}$ & $2.2 \ast 10^{15}$\\
+    \hline
+    \hline
+  \end{tabular}
+\end{table}
+
+\begin{figure}[!h]
+  \includegraphics[width=\linewidth,height=0.65\linewidth]{./MOSFET_surface_potential_graph.eps}
+  \caption{MOSFET Surface Potential}
+  \label{fig:MOS-surf-pot-graph}
+\end{figure}
+
+\begin{equation}
+  V_{bi} = \frac{kT}{q} ln\frac{N_{a}~N_{d}}{n_i^2} = 0.69677~V
+\end{equation}
+
+\begin{equation}
+    V_{fFB} = \Phi_{MS} = \Phi_M - \Phi_S = \Phi_M - \left( \chi + \frac{E_g}{2q} + \frac{kT}{q}ln\frac{N_a}{n_i} \right) = -0.34937~V
+\end{equation}
+
+Now we put these values in the surface potential from equation \ref{eq:MOS-sur-pot-S}. If we plot the $\phi_f(x)$ with respect to $x$ we will get the \textit{surface potential of MOS}. See figure \ref{fig:MOS-surf-pot-graph}.
+
+In the figure \ref{fig:MOS-surf-pot-graph}, we see that the as we go away from the source/drain end, the voltage decreases till a certain value. This final value is driven by the $V_{bi},~V_{fFB},~\peC$ and $\lambda_{MOS}$. Along the channel, lower potential is expected for lower SCE. Now apart from the $\lambda_{MOS}$ all other are process parameters. If the $\lambda$ value can be further lowered, then we can reach the final value of the surface potential faster i.e. the SCE will decrease.
 
 \section{Solving \PE in FinFET}
 
-To solve the \PE in FinFET, we need to take a closer look into the FinFET structure. From the Figure \ref{fig:FinFET-E-Field} the Gausian Surface is imagine at the FinFET channel region. Inside this Region, a point Experiences the electric Field $E_x$, $E_y$ and $E_z$. $E_x$ is caused by the SCE. $E_z$ is caused by the top Gate. $E_y$ is due to both side of the Gates.
+>To solve the \PE in FinFET, we need to take a closer look into the FinFET structure. From the Figure \ref{fig:FinFET-E-Field} the Gausian Surface is imagine at the FinFET channel region. Inside this Region, a point Experiences the electric Field $E_x$, $E_y$ and $E_z$. $E_x$ is caused by the SCE. $E_z$ is caused by the top Gate. $E_y$ is due to both side of the Gates.
 
 \begin{figure}[!h]
-  \includegraphics[scale=0.8]{./FinFET-E-Field.eps}
+  \includegraphics[width=\linewidth]{./FinFET-E-Field.eps}
   \caption{Tri-Gate Bulk FinFET with Gausian surface at the Channel region}
   \label{fig:FinFET-E-Field}
 \end{figure}
@@ -505,10 +573,13 @@ Putting the Boundary conditions from equation \ref{eq:fin-cond-1}, \ref{eq:fin-c
 \end{align*}
 
 Let's substitute this value of $\phi(x,y)$ in equation \ref{eq:pe-finFET}:
-\begin{align*}
-    \peX + \left( 1 + \frac{\W} {2 \H} \right) \peY = \peC\\
-    \frac{d^2\phi_f(x)}{dx^2} \left(1 + \frac{\epsilon_{ox}}{\epsilon_{Si}t_{ox}}y - \frac{\epsilon_{ox}}{\W \epsilon_{Si}t_{ox}}y^2\right) - \left( 1 + \frac{\W}{2 \H} \right) \frac{2 \epsilon_{ox}}{\epsilon_{Si}\W t_{ox}}\left( \phi_f(x) - V_{GS}^{'}\right) = \peC
-\end{align*}
+\begin{equation*}
+  \begin{split}
+    \peX + \left( 1 + \frac{\W} {2 \H} \right) \peY & = \peC\\
+\frac{d^2\phi_f(x)}{dx^2} \left(1 + \frac{\epsilon_{ox}}{\epsilon_{Si}t_{ox}}y - \frac{\epsilon_{ox}}{\W \epsilon_{Si}t_{ox}}y^2\right)&\quad\\
+- \left( 1 + \frac{\W}{2 \H} \right) \frac{2 \epsilon_{ox}}{\epsilon_{Si}\W t_{ox}}\left( \phi_f(x) - V_{GS}^{'}\right) &= \peC\\
+  \end{split}
+\end{equation*}
 This equation is vaid for all values of $y$. At $y=0$, $\phi(x,y)=\phi_f(x)$, the above equation becomes:
 \begin{equation}
   \label{eq:fin-pe-at-y0}
@@ -548,6 +619,15 @@ Like MOSFET, the constant $\varphi_0$ will be $V_{bi}$. This makes the final exp
 
 \section{Surface Potential of FinFET}
 
+Like solving for MOSFET, we take the $V_{GS} = 0$ to see only the effect of the drain/source.
+
+\begin{equation}
+  \label{eq:Fin-sur-pot-S}
+  \phi_f(x) = V_{bi} \exp(\pm x \lambda_{FIN}) + V_{fFB} - \peC \frac{1}{\lambda_{FIN}^2}
+\end{equation}
+
+
+
 \begin{table}[!h]
   \caption{FinFET Device Parameters}
   \label{tab:Fin-device-table}
@@ -560,32 +640,158 @@ Like MOSFET, the constant $\varphi_0$ will be $V_{bi}$. This makes the final exp
      & \\
     \hline
     & \\
-    EOT (nm), $t_{ox}$ \cite{web:ITRS} & $0.9$\\
+    EOT (nm), $t_{ox}$ \cite{book:Q-FinFET} & $1.2$\\
     $\epsilon_{ox}$ & $3.9~\epsilon_0$\\
     $\epsilon_{Si}$ & $11.68~\epsilon_0$\\
     $\epsilon_0$ (F/nm) & $8.85 * 10^{-21}$\\
-    $W_{Fin}$ (nm) & 20 \\
-    $H_{Fin}$ (nm) & 200\\
+    $W_{Fin}$ (nm) \cite{book:Q-FinFET}& 20 \\
+    $H_{Fin}$ (nm) \cite{book:Q-FinFET}& 40\\
     & \\
     \hline
     \hline
   \end{tabular}
 \end{table}
 
-Calculating the values from table \ref{tab:Fin-device-table}
+\begin{figure}[!h]
+  \includegraphics[width=\linewidth,height=0.65\linewidth]{./FinFET_surface_potential_graph.eps}
+  \caption{FinFET Surface Potential}
+  \label{fig:Fin-surf-pot-graph}
+\end{figure}
+
+\begin{figure}[!h]
+  \includegraphics[width=\linewidth,height=0.65\linewidth]{./MOSFET_FinFET_surface_potential_graph.eps}
+  \caption{Comparison of MOSFET FinFET Surface Potential}
+  \label{fig:MOS-Fin-surf-pot-graph}
+\end{figure}
+
+Similar to the MOSFET Surface potential, we will now try to derive the FinFET surface potential. For derivation $\lambda_{FIN}$ we will use the values from the table \ref{tab:Fin-device-table}.
+
+Calculating the values from table \ref{tab:Fin-device-table}, we get:
 
 \begin{equation}
-  \lambda_{FIN} = \lF = 0.19771~nm^{-1}
+  \lambda_{FIN} = \lF = 0.18650~nm^{-1}
 \end{equation}
 
-\section{Comparision of the Surface Potential of MOSFET and FinFET}
+Now all other values will be same as the MOSFET. Refer to the table \ref{tab:Gen-Device-values} for calculating the values of $V_{bi},~V_{fFB},~\peC$. Now lets substitute the values of $V_{bi},~V_{fFB},~\peC$ and $\lambda_{FIN}$ to the equation \ref{eq:Fin-sur-pot-S} and plot the $\phi_f(x)$ with respect to the channel length along $x$, we get the curve shown in the figure \ref{fig:Fin-surf-pot-graph}
+
+Now let us superimpose both MOSFET and the FinFET surface potential together from figure \ref{fig:MOS-surf-pot-graph} and figure \ref{fig:Fin-surf-pot-graph} respectively. The resultant plot is shown in the figure \ref{fig:MOS-Fin-surf-pot-graph}.
+
+Note that, the FinFET surface potential falls sharply compared with the MOSFET surface potential. This implies, in same technology, the FinFET will exebit lower SCE compared to MOSFET. This occurs due to the fact that the $\lambda_{Fin}~>~\lambda_{MOS}$.
+
+From the figure \ref{fig:MOS-Fin-surf-pot-graph} it is clear that the FinFET will be a clear choice of technology at the lower node.
+
+\section{Thinking beyond the FinFET}
+
+In previous chapter, we understood, why it was essential for Transistors to evolve from a planner structure to a Fin like structure. But is FinFET the \emph{best in the class}?
+
+The next advancement is Gate All Around (GAA) Transistors. There is an ongoing evaluation for this structures. For the GAA devices, it has the Gate Wrapped around the body, thus utilizing the Gate Electric Fields $E_z$ and $E_y$ better to reduce the $E_x$ as low as possible. See figure \ref{fig:GAA} for better understanding.
+
+\begin{figure}[!h]
+  \includegraphics[scale=0.8]{./GAA-device.eps}
+  \caption{Gate All Around Device}
+  \label{fig:GAA}
+\end{figure}
+
+
+The solution for GAA devices is not discussed in this chapter. I leave that for you. If you have understood the previous chapters, I believe you can do it yourself.
+
+All you need to do is:
+\begin{enumerate}
+\item Find out the Gaussian Surface
+\item Apply the \PE
+\item Get the boundary conditions
+\item Solve the differential equation
+\item Plot the surface potential along the channel
+\end{enumerate}
+
+There are some fabrication challenges ongoing for GAA. In the upcomming time these isssues will be hopefully resolved. We might see the GAA devices in 5nm in the year 2021. Year 2021 expected to be last year for VLSI scaling, as most of the fab can not continue to scale as it is not economical to scale anymore.
+
+Even if it is the last year of scaling, it does not mean there will no electronics. It will simply mean we can expect different types of devices, devices with different type of structure.
+
+Whatever comes up, one thing is sure, we can find out how it got scaled.
 
 \pagebreak
 
 \begin{appendices}
-  \section{Derivation of Flat Band Voltage}
-  \section{Derivation of Built in Potential}
   \section{How this document is produced?}
+  This document is produced by \LaTeX~ using GNU Emacs 24.5. The pictures are produced by a software called Latexdraw. The graph is created by GNU octave.
+
+  The language \LaTeX~ is human interface language designed for typesetting. This comes really handy when there is a large number of mathematics involved. Since this document talks mostly about mathematics, \LaTeX~ was the obvious choice.
+
+  The text editor Emacs 24.5, was pretty obvious choice for me. Emacs has many usefull feature for using \LaTeX, such as autocompletion, block insertion etc\ldots. The features are ebedded in the latex-mode.
+
+  The pictures I produced is in .eps format. For this, Latexdraw is used. It is a utility that I use for creating high quality graphics.
+
+  The graph is created by running the GNU Octave. GNU octave is a program for doing simple simulation.
+
+  You can find the full tex document along with the pdf and the eps file, from the gitgub website: \texttt{https://github.com/aritra-b-11/BulkFinFET-scaling-math}
+
+  How can you produce the same using Emacs ?
+
+  Well, I am using Ubuntu. I am sure there is a windows equivalent for the same. But I will discuss about the Linux Environment only.
+
+  \begin{enumerate}
+  \item First download and install the Emacs 24.5.
+  \item Then download all the files form the github website mentioned above. Put them in same directory.
+  \item Next open the file \textit{BulkFinFTE-scaling-math.tex} in Emacs.
+  \item Compile the file in Emacs using bundkey C-c C-c \textit{[control-c control-c]} Use latex, not pdflatex.
+  \item Next produce the pdf file from it. Use same C-c C-c for doing so. Use dvipdf.
+  \item At this point the pdf will be available at the directory.
+  \item If you want you can use the latexdraw for creating and editing the pictures.
+  \end{enumerate}
+
+  Finally the github website is great for sharing the document and the relevant files. If you have some specific queries about this topic please see \texttt{wiki or stackexchange or stackoverflow} for the same.
+
+  \section{Octave Code for producing the graphs}
+  \begin{lstlisting}
+
+    e_0 = 8.85 * 10^-12
+    e_ox = 3.9 * e_0
+    e_si = 11.68 * e_0
+    t_si = 70 * 10^-9
+    t_ox = 1.2 * 10^-9
+    W = 20 * 10^-9
+    H = 40 * 10^-9
+
+    l_MOS = sqrt(e_ox/(e_si * t_si * t_ox))
+    l_Fin = sqrt((1+(W/(2*H)))*((2*e_ox)/(e_si*W*t_ox)))
+
+    P_M = 4.1
+    X   = 4.05
+    V_t = 0.025
+    N_a = 1.3 * 10^17 * 10^6
+    N_d = 2.2 * 10^15 * 10^6
+    n_i = 1.5 * 10^10 * 10^6
+    q   = 1.6 * 10^-19
+    E_g = 1.12*q
+
+    V_FB = P_M - (X + (E_g/2*q) + (V_t*log(N_a/n_i)))
+    V_b = V_t * log((N_a*N_d)/(n_i**2))
+
+    x=0:0.1*10^-9:20*10^-9;
+    P_MOS = V_b * exp(-x*l_MOS) - V_FB - ((q*N_a)/e_si)*(1/l_MOS**2);
+    P_Fin = V_b * exp(-x*l_Fin) - V_FB - ((q*N_a)/e_si)*(1/l_Fin**2);
+
+    graphics_toolkit('gnuplot')
+
+    plot(x,P_MOS,"-r;MOSFET;")
+    xlabel("Effective Channel Length [m]")
+    ylabel("Surface potential [V]")
+    print -deps -color MOSFET_surface_potential_graph.eps
+
+    plot(x,P_Fin,"-g;FinFET;")
+    xlabel("Effective Channel Length [m]")
+    ylabel("Surface potential [V]")
+    print -deps -color FinFET_surface_potential_graph.eps
+
+
+    plot(x,P_MOS,"-+r;MOSFET;",x,P_Fin,"-og;FINFET;")
+    xlabel("Effective Channel Length [m]")
+    ylabel("Surface potential [V]")
+    print -deps -color MOSFET_FinFET_surface_potential_graph.eps
+
+  \end{lstlisting}
+
   \section{GPL}
 
   \textbf{``Mathematics behind the scaling: From MOSFET to FinFET and beyond''} is created for understanding of the scaling trends seen in the VLSI. The pdf describes why it is needed to scale MOSFET to FinFET and reach GAA devices, mathematically.
@@ -599,11 +805,7 @@ Calculating the values from table \ref{tab:Fin-device-table}
 
 \end{appendices}
 
-\pagebreak
-
 \begin{thebibliography}{10}
-\bibitem{web:ITRS}
-  \emph{http://public.itrs.net}
 \bibitem{book:Q-FinFET}
   Weihua Han, Zhiming M. Wang \emph{Toward Quantum FinFET}
 \bibitem{book:FF-MuG-T}
